@@ -16,9 +16,7 @@ export default function Prodotti() {
   useEffect(() => {
     localStorage.setItem("prodotti", JSON.stringify(prodotti));
   }, [prodotti]);
-  const { error, data } = useSWR(
-    "https://fakestoreapi.in/api/products?limit=150"
-  );
+  const { error, data } = useSWR("https://celestique.onrender.com");
   if (!data && !error) return <Loading></Loading>;
   if (error) return <p>Errore nel caricamento dei dati</p>;
   function handleAggiungiProdotto(prodotto) {

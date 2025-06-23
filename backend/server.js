@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
