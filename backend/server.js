@@ -9,10 +9,14 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 const secretKey = "celestique";
-const salt = parseInt(process.env.SALT )
+const salt = parseInt(process.env.SALT);
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/api/ping", (req, res) => {
+  res.json({ message: "Backend attivo e funzionante!" });
+});
 
 app.get("/users", async (req, res) => {
   try {
@@ -45,13 +49,13 @@ app.post("/users/login", async (req, res) => {
       [email]
     );
     if (user) {
-     const hashedPassword = user.password;
-     const isTrue = await bcrypt.compare(password, hashedPassword);
-     if( isTrue ){
-       const token = jwt.sign({ id: user.id, email: user.email }, secretKey, {
-         expiresIn: "1h", 
+      const hashedPassword = user.password;
+      const isTrue = await bcrypt.compare(password, hashedPassword);
+      if (isTrue) {
+        const token = jwt.sign({ id: user.id, email: user.email }, secretKey, {
+          expiresIn: "1h",
         });
-        
+
         return res.status(200).json({
           message: "login effettuato con successo",
           token,
@@ -65,7 +69,7 @@ app.post("/users/login", async (req, res) => {
           },
         });
       }
-    }else{
+    } else {
       return res.status(400).json({ message: "Credenziali non valide" });
     }
   } catch (error) {
@@ -93,7 +97,7 @@ app.get("/profilo", async (req, res) => {
         [decoded.email]
       );
 
-      res.status(200).json({user: userExist });
+      res.status(200).json({ user: userExist });
     });
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -228,6 +232,6 @@ app.get("/products/:id", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server avviato su http://localhost:${PORT}`);
+app.listen(process.env.PORT || PORT, () => {
+  console.log(`Server in ascolto sulla porta ${process.env.PORT || PORT}`);
 });
