@@ -13,14 +13,11 @@ export default function AuthProvider({ children }) {
 
   async function login({ email, password }) {
     try {
-      const response = await fetch(
-        "https://develhope.github.io/FS34-Team1-Project2/login",
-        {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch("https://celestique.onrender.com/login", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
       const result = await response.json();
       if (response.ok) {
@@ -60,14 +57,11 @@ export default function AuthProvider({ children }) {
       };
     }
     try {
-      const response = await fetch(
-        "https://develhope.github.io/FS34-Team1-Project2/login",
-        {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify(userData),
-        }
-      );
+      const response = await fetch("https://celestique.onrender.com/login", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(userData),
+      });
       const result = await response.json();
       if (response.ok) {
         // setUsers((prev) => [...prev, userData]);

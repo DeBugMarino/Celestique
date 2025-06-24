@@ -7,14 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function Dashboard() {
-  const { logout, token , user, setUser} = useAuth();
+  const { logout, token, user, setUser } = useAuth();
   const [apriMod, setApriMod] = useState(false);
   const [mod, setMod] = useState({});
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
   const [delet, setDelet] = useState(false);
   const Navigazione = useNavigate();
-
 
   function handleChange(event) {
     setMod((prev) => ({
@@ -37,7 +36,7 @@ export default function Dashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/users/update/${user.id}`,
+        `https://celestique.onrender.com/users/update/${user.id}`,
         {
           method: "PUT",
           headers: { "Content-type": "application/json" },
@@ -48,7 +47,7 @@ export default function Dashboard() {
 
       setMessage("modifica effettuata con successo");
       setUser(result.user);
-         setApriMod(false);
+      setApriMod(false);
     } catch (error) {
       console.error("error");
       setError("Modifica non riuscita");
@@ -58,10 +57,13 @@ export default function Dashboard() {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/users/delete/${user.id}`, {
-        method: "DELETE",
-        headers: { "Content-type": "application/json" },
-      });
+      const response = await fetch(
+        `https://celestique.onrender.com/users/delete/${user.id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-type": "application/json" },
+        }
+      );
       const result = await response.json();
 
       setMessage("Account eliminato con successo");
@@ -83,7 +85,7 @@ export default function Dashboard() {
       <Navbar />
       <div className="flex">
         <Aside></Aside>
-      <main className="flex-1 ml-0 lg:ml-64 p-8">
+        <main className="flex-1 ml-0 lg:ml-64 p-8">
           <div className="flow-root w-full max-w-200 bg-white p-8 rounded-2xl shadow-xl space-y-5 my-8 ">
             <div className="px-4 py-5 sm:px-6">
               <h3 className=" leading-6 font-medium text-black text-4xl">
