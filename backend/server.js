@@ -11,12 +11,11 @@ const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
-app.use(cors());
 app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://celestique.vercel.app"], // o l’URL del tuo frontend
+    origin: "https://develhope.github.io",
     credentials: true,
   })
 );
