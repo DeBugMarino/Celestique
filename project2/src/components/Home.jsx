@@ -26,13 +26,13 @@ export default function Home() {
               </p>
               <div className="flex mt-8">
                 <a
-                  href="http://localhost:5173/audio"
+                  href="https://celestique.onrender.com/audio"
                   className="uppercase py-2 px-4 rounded-lg bg-yellow-200 border-2 border-transparent text-black text-md mr-4 hover:bg-yellow-400"
                 >
                   Acquista le nuove Beats
                 </a>
                 <a
-                  href="http://localhost:5173/Prodotti"
+                  href="https://celestique.onrender.com/Prodotti"
                   className="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white text-md"
                 >
                   Esplora il negozio

@@ -17,9 +17,7 @@ export default function ElettroDomestici() {
   useEffect(() => {
     localStorage.setItem("prodotti", JSON.stringify(prodotti));
   }, [prodotti]);
-  const { error, data } = useSWR(
-    "https://fakestoreapi.in/api/products?limit=150"
-  );
+  const { error, data } = useSWR("https://celestique.onrender.com/products");
   const products = data;
   if (!data && !error) return <Loading />;
   if (error) return <p>Errore nel caricamento dei dati</p>;

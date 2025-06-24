@@ -15,20 +15,24 @@ export default function MyOrders() {
       if (!user?.id) return;
 
       try {
-        const response = await fetch(`http://localhost:3000/orders/${user.id}`);
+        const response = await fetch(
+          `https://celestique.onrender.com/${user.id}`
+        );
         const data = await response.json();
 
         const ordiniConProdotti = await Promise.all(
           data.orders.map(async (ordine) => {
             const prodottiDettagliati = await Promise.all(
               ordine.products.map(async (productId) => {
-                const res = await fetch(`http://localhost:3000/products/${productId}`);
+                const res = await fetch(
+                  `https://celestique.onrender.com/${productId}`
+                );
                 return await res.json();
               })
             );
             return {
               id: ordine.id,
-              prodotti: prodottiDettagliati
+              prodotti: prodottiDettagliati,
             };
           })
         );
@@ -65,7 +69,9 @@ export default function MyOrders() {
               <ul className="space-y-6">
                 {ordini.map((ordine) => (
                   <li key={ordine.id} className="space-y-3 max-w-2xl">
-                    <h4 className="font-semibold text-lg">Ordine {ordine.id}</h4>
+                    <h4 className="font-semibold text-lg">
+                      Ordine {ordine.id}
+                    </h4>
                     <ul className="space-y-3">
                       {ordine.prodotti.map((prodotto) => (
                         <li
