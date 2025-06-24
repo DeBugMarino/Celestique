@@ -11,14 +11,8 @@ const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
+app.use(cors());
 app.use(express.json());
-
-app.use(
-  cors({
-    origin: "https://develhope.github.io",
-    credentials: true,
-  })
-);
 
 app.get("/api/ping", (req, res) => {
   res.json({ message: "Backend attivo e funzionante!" });
