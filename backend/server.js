@@ -11,7 +11,17 @@ const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000", // per development locale
+      "http://localhost:5173", // se usi Vite
+      "https://develhope.github.io", // per GitHub Pages
+      "https://celestique.onrender.com", // se hai un dominio personalizzato
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get("/api/ping", (req, res) => {
