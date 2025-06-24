@@ -14,6 +14,13 @@ const salt = parseInt(process.env.SALT);
 app.use(cors());
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://celestique.vercel.app"], // o l’URL del tuo frontend
+    credentials: true,
+  })
+);
+
 app.get("/api/ping", (req, res) => {
   res.json({ message: "Backend attivo e funzionante!" });
 });
