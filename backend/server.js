@@ -13,12 +13,7 @@ const salt = parseInt(process.env.SALT);
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000", // per development locale
-      "http://localhost:5173", // se usi Vite
-      "https://develhope.github.io", // per GitHub Pages
-      "https://celestique.onrender.com", // se hai un dominio personalizzato
-    ],
+    origin: ["https://develhope.github.io/FS34-Team1-Project2/"],
     credentials: true,
   })
 );
