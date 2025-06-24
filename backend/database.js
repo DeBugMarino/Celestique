@@ -68,3 +68,58 @@ db.none(
   );
 
 export default db;
+
+// Alla fine del tuo database.js
+setTimeout(() => {
+  popolaProdotti();
+}, 3000); // Aspetta 3 secondi che le tabelle siano create
+
+// Dopo aver creato tutte le tabelle, aggiungi questa funzione
+async function popolaProdotti() {
+  try {
+    // Controlla se ci sono già prodotti
+    const count = await db.one("SELECT COUNT(*) FROM products");
+    if (count.count > 0) {
+      console.log("Prodotti già presenti nel database");
+      return;
+    }
+
+    console.log("Popolando i prodotti...");
+
+    // Prendi i prodotti dall'API esterna
+    const response = await fetch(
+      "https://fakestoreapi.in/api/products?limit=150"
+    );
+    const data = await response.json();
+
+    // Inserisci ogni prodotto nel database
+    for (const prodotto of data.products) {
+      await db.none(
+        `INSERT INTO products (title, image, price, description, brand, model, color, category) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [
+          prodotto.title,
+          prodotto.image,
+          prodotto.price,
+          prodotto.description,
+          prodotto.brand || "N/A",
+          prodotto.model || "N/A",
+          prodotto.color || "N/A",
+          prodotto.category,
+        ]
+      );
+    }
+
+    console.log("Prodotti popolati con successo!");
+  } catch (error) {
+    console.error("Errore nel popolare i prodotti:", error);
+  }
+}
+
+// Chiama la funzione dopo aver creato le tabelle
+Promise.all([
+  // Le tue query CREATE TABLE qui...
+]).then(() => {
+  console.log("Tutte le tabelle create, popolando i prodotti...");
+  popolaProdotti();
+});
