@@ -57,11 +57,14 @@ export default function AuthProvider({ children }) {
       };
     }
     try {
-      const response = await fetch("https://celestique.onrender.com/login", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(userData),
-      });
+      const response = await fetch(
+        "https://celestique.onrender.com/registrazione",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(userData),
+        }
+      );
       const result = await response.json();
       if (response.ok) {
         // setUsers((prev) => [...prev, userData]);
