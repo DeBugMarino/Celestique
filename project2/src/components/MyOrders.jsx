@@ -88,7 +88,7 @@ export default function MyOrders() {
                               {prodotto.title}
                             </p>
                             <a
-                              href={`http://localhost:5173/prodotti/${prodotto.id}`}
+                              href={`https://celestique.onrender.com/${prodotto.id}`}
                               className="text-sm text-sky-600 hover:underline"
                             >
                               Vai al prodotto
