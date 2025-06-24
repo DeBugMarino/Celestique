@@ -13,7 +13,7 @@ const salt = parseInt(process.env.SALT);
 
 app.use(
   cors({
-    origin: ["https://develhope.github.io/FS34-Team1-Project2/"],
+    origin: ["https://develhope.github.io"],
     credentials: true,
   })
 );
