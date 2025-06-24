@@ -58,7 +58,7 @@ export default function AuthProvider({ children }) {
     }
     try {
       const response = await fetch(
-        "https://celestique.onrender.com/registrazione",
+        "https://celestique.onrender.com/users/register",
         {
           method: "POST",
           headers: { "Content-type": "application/json" },
