@@ -32,7 +32,7 @@ export default function Home() {
                   Acquista le nuove Beats
                 </a>
                 <a
-                  href="https://celestique.onrender.com/Prodotti"
+                  href="https://celestique.onrender.com/prodotti"
                   className="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white text-md"
                 >
                   Esplora il negozio
