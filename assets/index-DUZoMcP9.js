@@ -7533,16 +7533,16 @@ function explodeOptionalSegments(path) {
     return isOptional ? [required, ""] : [required];
   }
   let restExploded = explodeOptionalSegments(rest.join("/"));
-  let result2 = [];
-  result2.push(
+  let result = [];
+  result.push(
     ...restExploded.map(
       (subpath) => subpath === "" ? required : [required, subpath].join("/")
     )
   );
   if (isOptional) {
-    result2.push(...restExploded);
+    result.push(...restExploded);
   }
-  return result2.map(
+  return result.map(
     (exploded) => path.startsWith("/") && exploded === "" ? "/" : exploded
   );
 }
@@ -9369,26 +9369,35 @@ function AuthProvider({ children }) {
   async function login({ email, password }) {
     try {
       const response = await fetch(
-        "https://celestique.onrender.com/user/login",
+        "https://celestique.onrender.com/users/login",
         {
           method: "POST",
-          headers: { "Content-type": "application/json" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
         }
       );
-      const result2 = await response.json();
+      const text = await response.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (err) {
+        console.error("Risposta non in JSON:", text);
+        return { esito: false, messaggio: "Risposta non valida dal server" };
+      }
       if (response.ok) {
-        setUser(result2.user);
+        setUser(result.user);
         setError(null);
-        localStorage.setItem("token", result2.token);
-        return { esito: true, messaggio: "Credenziali ok" };
+        localStorage.setItem("token", result.token);
+        return { esito: true, messaggio: "Login ok" };
       } else {
-        console.log("user not found");
-        setUser(null);
-        return { esito: false, messaggio: "Credenziali errate" };
+        return {
+          esito: false,
+          messaggio: result.message || "Credenziali errate"
+        };
       }
     } catch (error2) {
-      console.error("Errore durante la richiesta:", error2);
+      console.error("Errore di rete:", error2);
+      return { esito: false, messaggio: "Errore di rete" };
     }
   }
   function getToken() {
@@ -9417,7 +9426,7 @@ function AuthProvider({ children }) {
           body: JSON.stringify(userData)
         }
       );
-      const result2 = await response.json();
+      const result = await response.json();
       if (response.ok) {
         setError(null);
         return { esito: true, messaggio: null };
@@ -9650,14 +9659,14 @@ function __esDecorate(ctor, descriptorIn, decorators, contextIn, initializers, e
       if (done) throw new TypeError("Cannot add initializers after decoration has completed");
       extraInitializers.push(accept(f2 || null));
     };
-    var result2 = (0, decorators[i2])(kind === "accessor" ? { get: descriptor.get, set: descriptor.set } : descriptor[key], context);
+    var result = (0, decorators[i2])(kind === "accessor" ? { get: descriptor.get, set: descriptor.set } : descriptor[key], context);
     if (kind === "accessor") {
-      if (result2 === void 0) continue;
-      if (result2 === null || typeof result2 !== "object") throw new TypeError("Object expected");
-      if (_2 = accept(result2.get)) descriptor.get = _2;
-      if (_2 = accept(result2.set)) descriptor.set = _2;
-      if (_2 = accept(result2.init)) initializers.unshift(_2);
-    } else if (_2 = accept(result2)) {
+      if (result === void 0) continue;
+      if (result === null || typeof result !== "object") throw new TypeError("Object expected");
+      if (_2 = accept(result.get)) descriptor.get = _2;
+      if (_2 = accept(result.set)) descriptor.set = _2;
+      if (_2 = accept(result.init)) initializers.unshift(_2);
+    } else if (_2 = accept(result)) {
       if (kind === "field") initializers.unshift(_2);
       else descriptor[key] = _2;
     }
@@ -9703,8 +9712,8 @@ function __awaiter(thisArg, _arguments, P2, generator) {
         reject(e2);
       }
     }
-    function step2(result2) {
-      result2.done ? resolve(result2.value) : adopt(result2.value).then(fulfilled, rejected);
+    function step2(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step2((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -9942,12 +9951,12 @@ var ownKeys$1 = function(o2) {
 };
 function __importStar(mod) {
   if (mod && mod.__esModule) return mod;
-  var result2 = {};
+  var result = {};
   if (mod != null) {
-    for (var k2 = ownKeys$1(mod), i2 = 0; i2 < k2.length; i2++) if (k2[i2] !== "default") __createBinding(result2, mod, k2[i2]);
+    for (var k2 = ownKeys$1(mod), i2 = 0; i2 < k2.length; i2++) if (k2[i2] !== "default") __createBinding(result, mod, k2[i2]);
   }
-  __setModuleDefault(result2, mod);
-  return result2;
+  __setModuleDefault(result, mod);
+  return result;
 }
 function __importDefault(mod) {
   return mod && mod.__esModule ? mod : { default: mod };
@@ -10009,8 +10018,8 @@ function __disposeResources(env) {
       try {
         if (!r2.async && s2 === 1) return s2 = 0, env.stack.push(r2), Promise.resolve().then(next2);
         if (r2.dispose) {
-          var result2 = r2.dispose.call(r2.value);
-          if (r2.async) return s2 |= 2, Promise.resolve(result2).then(next2, function(e2) {
+          var result = r2.dispose.call(r2.value);
+          if (r2.async) return s2 |= 2, Promise.resolve(result).then(next2, function(e2) {
             fail(e2);
             return next2();
           });
@@ -11257,14 +11266,14 @@ function getParentNode(node2) {
   if (getNodeName(node2) === "html") {
     return node2;
   }
-  const result2 = (
+  const result = (
     // Step into the shadow DOM of the parent of a slotted node.
     node2.assignedSlot || // DOM Element detected.
     node2.parentNode || // ShadowRoot detected.
     isShadowRoot$1(node2) && node2.host || // Fallback.
     getDocumentElement(node2)
   );
-  return isShadowRoot$1(result2) ? result2.host : result2;
+  return isShadowRoot$1(result) ? result.host : result;
 }
 function getNearestOverflowAncestor(node2) {
   const parentNode = getParentNode(node2);
@@ -11566,7 +11575,7 @@ function getClippingElementAncestors(element, cache2) {
   if (cachedResult) {
     return cachedResult;
   }
-  let result2 = getOverflowAncestors(element, [], false).filter((el) => isElement$1(el) && getNodeName(el) !== "body");
+  let result = getOverflowAncestors(element, [], false).filter((el) => isElement$1(el) && getNodeName(el) !== "body");
   let currentContainingBlockComputedStyle = null;
   const elementIsFixed = getComputedStyle$1(element).position === "fixed";
   let currentNode = elementIsFixed ? getParentNode(element) : element;
@@ -11578,14 +11587,14 @@ function getClippingElementAncestors(element, cache2) {
     }
     const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === "static" && !!currentContainingBlockComputedStyle && ["absolute", "fixed"].includes(currentContainingBlockComputedStyle.position) || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
     if (shouldDropCurrentNode) {
-      result2 = result2.filter((ancestor) => ancestor !== currentNode);
+      result = result.filter((ancestor) => ancestor !== currentNode);
     } else {
       currentContainingBlockComputedStyle = computedStyle;
     }
     currentNode = getParentNode(currentNode);
   }
-  cache2.set(element, result2);
-  return result2;
+  cache2.set(element, result);
+  return result;
 }
 function getClippingRect(_ref) {
   let {
@@ -11970,8 +11979,8 @@ var isInert = function isInert2(node2, lookUp) {
   }
   var inertAtt = node2 === null || node2 === void 0 ? void 0 : (_node$getAttribute = node2.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node2, "inert");
   var inert = inertAtt === "" || inertAtt === "true";
-  var result2 = inert || lookUp && node2 && isInert2(node2.parentNode);
-  return result2;
+  var result = inert || lookUp && node2 && isInert2(node2.parentNode);
+  return result;
 };
 var isContentEditable = function isContentEditable2(node2) {
   var _node$getAttribute2;
@@ -13461,16 +13470,16 @@ function requireObjectsToArray() {
       if (n2 === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n2)) return _arrayLikeToArray(o2, minLen);
     }
     function objectsToArray2(object) {
-      var result2 = [];
+      var result = [];
       Object.values(object).forEach(function(value) {
         if (typeof value === "string") {
-          result2 = _toConsumableArray(result2).concat([value]);
+          result = _toConsumableArray(result).concat([value]);
         } else if (typeof value === "object" && !Array.isArray(value) && value !== null) {
-          result2 = _toConsumableArray(result2).concat(_toConsumableArray(objectsToArray2(value)));
+          result = _toConsumableArray(result).concat(_toConsumableArray(objectsToArray2(value)));
         }
         return void 0;
       });
-      return result2;
+      return result;
     }
   })(objectsToArray);
   return objectsToArray;
@@ -17800,11 +17809,11 @@ function requirePopmotion_cjs() {
   }
   const rootIterations = 12;
   function approximateRoot(envelope, derivative, initialGuess) {
-    let result2 = initialGuess;
+    let result = initialGuess;
     for (let i2 = 1; i2 < rootIterations; i2++) {
-      result2 = result2 - envelope(result2) / derivative(result2);
+      result = result - envelope(result) / derivative(result);
     }
-    return result2;
+    return result;
   }
   function calcAngularFreq(undampedFreq, dampingRatio) {
     return undampedFreq * Math.sqrt(1 - dampingRatio * dampingRatio);
@@ -29009,10 +29018,10 @@ function setActiveElementOnTab(event) {
   }
 }
 function isTabFocus(event) {
-  const result2 = activeElement === event.relatedTarget;
+  const result = activeElement === event.relatedTarget;
   activeElement = event.relatedTarget;
   clearTimeout(timeoutId);
-  return result2;
+  return result;
 }
 const FocusGuard = /* @__PURE__ */ reactExports$1.forwardRef(function FocusGuard2(props, ref) {
   const onFocus = useEvent(props.onFocus);
@@ -48524,9 +48533,9 @@ function Registrazione() {
       setMessaggio(error);
       return;
     }
-    const result2 = await registrazione(user);
-    if (!result2.esito) {
-      setMessaggio(result2.messaggio);
+    const result = await registrazione(user);
+    if (!result.esito) {
+      setMessaggio(result.messaggio);
     } else {
       setMessaggio("Registrazione avvenuta con successo");
       setTimeout(() => {
@@ -49245,34 +49254,34 @@ const stableHash = (arg) => {
   const isDate = isObjectType(arg, "Date");
   const isRegex = isObjectType(arg, "RegExp");
   const isPlainObject = isObjectType(arg, "Object");
-  let result2;
+  let result;
   let index2;
   if (OBJECT(arg) === arg && !isDate && !isRegex) {
-    result2 = table.get(arg);
-    if (result2) return result2;
-    result2 = ++counter + "~";
-    table.set(arg, result2);
+    result = table.get(arg);
+    if (result) return result;
+    result = ++counter + "~";
+    table.set(arg, result);
     if (Array.isArray(arg)) {
-      result2 = "@";
+      result = "@";
       for (index2 = 0; index2 < arg.length; index2++) {
-        result2 += stableHash(arg[index2]) + ",";
+        result += stableHash(arg[index2]) + ",";
       }
-      table.set(arg, result2);
+      table.set(arg, result);
     }
     if (isPlainObject) {
-      result2 = "#";
+      result = "#";
       const keys2 = OBJECT.keys(arg).sort();
       while (!isUndefined(index2 = keys2.pop())) {
         if (!isUndefined(arg[index2])) {
-          result2 += index2 + ":" + stableHash(arg[index2]) + ",";
+          result += index2 + ":" + stableHash(arg[index2]) + ",";
         }
       }
-      table.set(arg, result2);
+      table.set(arg, result);
     }
   } else {
-    result2 = isDate ? arg.toJSON() : type == "symbol" ? arg.toString() : type == "string" ? JSON.stringify(arg) : "" + arg;
+    result = isDate ? arg.toJSON() : type == "symbol" ? arg.toString() : type == "string" ? JSON.stringify(arg) : "" + arg;
   }
-  return result2;
+  return result;
 };
 const serialize$1 = (key) => {
   if (isFunction(key)) {
@@ -51698,17 +51707,18 @@ function Login() {
   async function handleSubmit(event) {
     event.preventDefault();
     try {
-      const result2 = await login(user);
-      if (result2 == null ? void 0 : result2.esito) {
+      const result = await login(user);
+      if (result == null ? void 0 : result.esito) {
         setMessaggio("Login avvenuto con successo!");
         setTimeout(() => {
           navigate("/profilo");
         }, 2e3);
       } else {
-        setMessaggio(result2.messaggio);
+        setMessaggio(result.messaggio);
       }
     } catch (error2) {
-      setMessaggio(`errore: ${result.messaggio}`);
+      console.error("Errore imprevisto:", error2);
+      setMessaggio("Errore imprevisto durante il login.");
     }
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
@@ -51820,9 +51830,9 @@ function Dashboard() {
           body: JSON.stringify(mod)
         }
       );
-      const result2 = await response.json();
+      const result = await response.json();
       setMessage("modifica effettuata con successo");
-      setUser(result2.user);
+      setUser(result.user);
       setApriMod(false);
     } catch (error2) {
       console.error("error");
@@ -51839,7 +51849,7 @@ function Dashboard() {
           headers: { "Content-type": "application/json" }
         }
       );
-      const result2 = await response.json();
+      const result = await response.json();
       setMessage("Account eliminato con successo");
       localStorage.removeItem("token");
       setUser(null);
@@ -53135,4 +53145,4 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 clientExports.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(SWRConfig, { value: { fetcher }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports$1.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.ThemeProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) }) }) })
 );
-//# sourceMappingURL=index-DYSnPd5U.js.map
+//# sourceMappingURL=index-DUZoMcP9.js.map
