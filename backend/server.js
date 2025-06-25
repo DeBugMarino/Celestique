@@ -13,7 +13,7 @@ const salt = parseInt(process.env.SALT);
 
 app.use(
   cors({
-    origin: "https://develhope.github.io", // 👈 questo è il tuo frontend GitHub Pages
+    origin: "https://debugmarino.github.io", // 👈 questo è il tuo frontend GitHub Pages
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: false, // o true se usi cookie (tu usi token, quindi va bene false)
   })
