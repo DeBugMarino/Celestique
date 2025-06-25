@@ -17,7 +17,7 @@ export default function Prodotto() {
 
   const { id } = useParams();
   const { error, data, isLoading } = useSWR(
-    `https://celestique.onrender.com/prodotti/${id}`
+    `https://celestique.onrender.com/products/${id}`
   );
   if (isLoading) return <Loading></Loading>;
   if (error) return <p>Errore nel caricamento dei dati</p>;
