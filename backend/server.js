@@ -11,8 +11,6 @@ const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
-const cors = require("cors");
-
 app.use(
   cors({
     origin: "https://develhope.github.io", // 👈 questo è il tuo frontend GitHub Pages
