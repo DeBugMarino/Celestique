@@ -9368,11 +9368,14 @@ function AuthProvider({ children }) {
   });
   async function login({ email, password }) {
     try {
-      const response = await fetch("https://celestique.onrender.com/login", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
+      const response = await fetch(
+        "https://celestique.onrender.com/user/login",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ email, password })
+        }
+      );
       const result2 = await response.json();
       if (response.ok) {
         setUser(result2.user);
@@ -53132,4 +53135,4 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 clientExports.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(SWRConfig, { value: { fetcher }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports$1.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.ThemeProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) }) }) })
 );
-//# sourceMappingURL=index-DlPXDvAm.js.map
+//# sourceMappingURL=index-DYSnPd5U.js.map
