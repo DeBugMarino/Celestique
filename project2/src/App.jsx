@@ -24,7 +24,7 @@ import AccountEliminato from "./components/AccountEliminato";
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename="/FS34-Team1-Project2">
+      <BrowserRouter basename="/Celestique">
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route
