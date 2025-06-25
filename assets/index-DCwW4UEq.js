@@ -52462,7 +52462,7 @@ function Prodotti() {
   reactExports$1.useEffect(() => {
     localStorage.setItem("prodotti", JSON.stringify(prodotti));
   }, [prodotti]);
-  const { error, data: data2 } = useSWR("https://celestique.onrender.com/prodotti");
+  const { error, data: data2 } = useSWR("https://celestique.onrender.com/products/");
   if (!data2 && !error) return /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {});
   if (error) return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Errore nel caricamento dei dati" });
   function handleAggiungiProdotto(prodotto) {
@@ -52560,7 +52560,7 @@ function Prodotto() {
   }, [prodotti]);
   const { id } = useParams();
   const { error, data: data2, isLoading } = useSWR(
-    `https://celestique.onrender.com/prodotti/${id}`
+    `https://celestique.onrender.com/products/${id}`
   );
   if (isLoading) return /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {});
   if (error) return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Errore nel caricamento dei dati" });
@@ -53145,4 +53145,4 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 clientExports.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(SWRConfig, { value: { fetcher }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports$1.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.ThemeProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) }) }) })
 );
-//# sourceMappingURL=index-DUZoMcP9.js.map
+//# sourceMappingURL=index-DCwW4UEq.js.map
