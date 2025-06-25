@@ -25,7 +25,8 @@ export default function Login() {
         setMessaggio(result.messaggio);
       }
     } catch (error) {
-      setMessaggio(`errore: ${result.messaggio}`);
+      console.error("Errore imprevisto:", error);
+      setMessaggio("Errore imprevisto durante il login.");
     }
   }
 
