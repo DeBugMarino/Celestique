@@ -14,28 +14,38 @@ export default function AuthProvider({ children }) {
   async function login({ email, password }) {
     try {
       const response = await fetch(
-        "https://celestique.onrender.com/user/login",
+        "https://celestique.onrender.com/users/login",
         {
           method: "POST",
-          headers: { "Content-type": "application/json" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         }
       );
 
-      const result = await response.json();
+      const text = await response.text();
+      let result;
+
+      try {
+        result = JSON.parse(text);
+      } catch (err) {
+        console.error("Risposta non in JSON:", text);
+        return { esito: false, messaggio: "Risposta non valida dal server" };
+      }
+
       if (response.ok) {
         setUser(result.user);
         setError(null);
         localStorage.setItem("token", result.token);
-        // localStorage.setItem("user", JSON.stringify(result.user));
-        return { esito: true, messaggio: "Credenziali ok" };
+        return { esito: true, messaggio: "Login ok" };
       } else {
-        console.log("user not found");
-        setUser(null);
-        return { esito: false, messaggio: "Credenziali errate" };
+        return {
+          esito: false,
+          messaggio: result.message || "Credenziali errate",
+        };
       }
     } catch (error) {
-      console.error("Errore durante la richiesta:", error);
+      console.error("Errore di rete:", error);
+      return { esito: false, messaggio: "Errore di rete" };
     }
   }
 
