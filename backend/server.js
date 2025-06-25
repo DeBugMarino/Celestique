@@ -11,12 +11,16 @@ const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
+const cors = require("cors");
+
 app.use(
   cors({
-    origin: ["https://develhope.github.io"],
-    credentials: true,
+    origin: "https://develhope.github.io", // 👈 questo è il tuo frontend GitHub Pages
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: false, // o true se usi cookie (tu usi token, quindi va bene false)
   })
 );
+
 app.use(express.json());
 
 app.get("/api/ping", (req, res) => {
