@@ -13,11 +13,14 @@ export default function AuthProvider({ children }) {
 
   async function login({ email, password }) {
     try {
-      const response = await fetch("https://celestique.onrender.com/login", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://celestique.onrender.com/user/login",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
