@@ -53078,7 +53078,7 @@ function AccountEliminato() {
   ] }) });
 }
 function App() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(AuthProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(BrowserRouter, { basename: "/FS34-Team1-Project2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Routes, { children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(AuthProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(BrowserRouter, { basename: "/Celestique", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Routes, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Home, {}) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       Route,
@@ -53132,4 +53132,4 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 clientExports.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(SWRConfig, { value: { fetcher }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports$1.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.ThemeProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) }) }) })
 );
-//# sourceMappingURL=index-9djQdu3D.js.map
+//# sourceMappingURL=index-DlPXDvAm.js.map
