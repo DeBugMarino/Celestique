@@ -11,7 +11,6 @@ const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
-const cors = require("cors");
 app.use(cors());
 
 app.use(express.json());
