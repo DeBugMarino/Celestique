@@ -233,6 +233,15 @@ app.get("/products/:id", async (req, res) => {
   }
 });
 
+app.get("/products", async (req, res) => {
+  try {
+    const products = await dataBase.any("SELECT * FROM products");
+    res.status(200).json({ products }); // Assicurati di restituire un oggetto con la chiave "products"
+  } catch (error) {
+    res.status(500).json({ error: "Errore nel recupero dei prodotti" });
+  }
+});
+
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server in ascolto sulla porta ${process.env.PORT || PORT}`);
 });
