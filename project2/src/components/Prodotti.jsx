@@ -18,7 +18,7 @@ export default function Prodotti() {
     localStorage.setItem("prodotti", JSON.stringify(prodotti));
   }, [prodotti]);
 
-  const { error, data } = useSWR("https://celestique.onrender.com/products/");
+  const { error, data } = useSWR("https://celestique.onrender.com/products");
   if (!data && !error) return <Loading />;
   if (error) return <p>Errore nel caricamento dei dati</p>;
 
@@ -102,11 +102,11 @@ export default function Prodotti() {
       {messaggio && (
         <div
           id="popUp"
-          className="rounded-md border border-gray-300 bg-white p-4"
+          className="rounded-md border border-gray-300 bg-white p-4 m-4"
         >
           <p className="font-medium text-sky-500">{messaggio}</p>
           <button
-            onClick={(e) => setMessaggio(null)}
+            onClick={() => setMessaggio(null)}
             className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-100"
           >
             Chiudi

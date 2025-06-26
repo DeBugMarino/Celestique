@@ -242,7 +242,6 @@ app.get("/products/", async (req, res) => {
     res.status(500).json({ error: "Errore nel recupero dei prodotti" });
   }
 });
-
 // Proxy per immagini da GCS
 app.get("/proxy", (req, res) => {
   const imageUrl = req.query.url;
@@ -251,31 +250,24 @@ app.get("/proxy", (req, res) => {
     return res.status(400).json({ error: "Parametro 'url' mancante" });
   }
 
-  // Solo domini GCS permessi
-  const allowedDomains = ["https://storage.googleapis.com/"];
-  const isAllowed = allowedDomains.some((domain) =>
-    imageUrl.startsWith(domain)
-  );
-
+  // Verifica dominio consentito
+  const isAllowed = imageUrl.startsWith("https://storage.googleapis.com/");
   if (!isAllowed) {
     return res.status(403).json({ error: "Dominio non autorizzato" });
   }
 
-  // Aggiunta header per evitare blocchi del browser
-  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  // Header fondamentali per evitare blocchi moderni
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src *; img-src * data: blob: 'unsafe-inline';"
-  );
-  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+  res.setHeader("Cross-Origin-Opener-Policy", "unsafe-none");
   res.setHeader("Cache-Control", "public, max-age=86400");
 
-  // Pipe dell'immagine
+  // Esegui richiesta e inoltra
   request
     .get(imageUrl)
     .on("error", (err) => {
-      console.error("Errore nel proxy:", err.message);
+      console.error("Errore proxy:", err.message);
       res.status(500).send("Errore proxy: " + err.message);
     })
     .pipe(res);
