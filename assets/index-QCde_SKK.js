@@ -52473,60 +52473,66 @@ function Prodotti() {
     }, 2e3);
   }
   function vediProdotto(id) {
-    const prodottoId = id;
-    console.log(prodottoId);
-    setIdPro(prodottoId);
-    navigate(`/prodotti/${prodottoId}`);
+    setIdPro(id);
+    navigate(`/prodotti/${id}`);
+  }
+  function getImageUrl(image) {
+    const isGcsImage = image.startsWith("https://storage.googleapis.com/");
+    return isGcsImage ? `https://celestique.onrender.com/proxy?url=${encodeURIComponent(image)}` : image;
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar$1, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 mx-auto lg:max-w-6xl md:max-w-4xl", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-slate-900 mb-6 sm:mb-8", children: "Il Nostro Catalogo Completo" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6", children: data2.products.map((prodotto) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "bg-white flex flex-col rounded overflow-hidden shadow-md hover:scale-[1.01] transition-all relative",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                onClick: () => vediProdotto(prodotto.id),
-                className: "block",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "img",
-                    {
-                      src: prodotto.image,
-                      alt: prodotto.title,
-                      className: "w-full aspect-[18/24] object-cover object-top"
-                    }
-                  ) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h5", { className: "text-sm sm:text-base font-semibold text-slate-900 line-clamp-2", children: prodotto.title }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 flex items-center flex-wrap gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("h6", { className: "text-sm sm:text-base font-semibold text-slate-900", children: [
-                      prodotto.price,
-                      " $"
-                    ] }) })
-                  ] })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-[50px] p-4 !pt-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "absolute left-0 right-0 bottom-3 max-w-[88%] mx-auto text-sm px-2 py-2 font-medium w-full bg-blue-600 hover:bg-blue-700 text-white tracking-wide outline-none border-none rounded",
-                onClick: (e2) => {
-                  e2.preventDefault();
-                  handleAggiungiProdotto(prodotto);
-                },
-                children: "Aggiungi al carrello"
-              }
-            ) })
-          ]
-        },
-        prodotto.id
-      )) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6", children: data2.products.map((prodotto) => {
+        const imageUrl = getImageUrl(prodotto.image);
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "bg-white flex flex-col rounded overflow-hidden shadow-md hover:scale-[1.01] transition-all relative",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  onClick: () => vediProdotto(prodotto.id),
+                  className: "block",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "img",
+                      {
+                        src: imageUrl,
+                        alt: prodotto.title,
+                        loading: "lazy",
+                        className: "w-full aspect-[18/24] object-cover object-top"
+                      }
+                    ) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("h5", { className: "text-sm sm:text-base font-semibold text-slate-900 line-clamp-2", children: prodotto.title }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 flex items-center flex-wrap gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("h6", { className: "text-sm sm:text-base font-semibold text-slate-900", children: [
+                        prodotto.price,
+                        " $"
+                      ] }) })
+                    ] })
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-[50px] p-4 !pt-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  className: "absolute left-0 right-0 bottom-3 max-w-[88%] mx-auto text-sm px-2 py-2 font-medium w-full bg-blue-600 hover:bg-blue-700 text-white tracking-wide outline-none border-none rounded",
+                  onClick: (e2) => {
+                    e2.preventDefault();
+                    handleAggiungiProdotto(prodotto);
+                  },
+                  children: "Aggiungi al carrello"
+                }
+              ) })
+            ]
+          },
+          prodotto.id
+        );
+      }) })
     ] }),
     messaggio && /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "div",
@@ -52580,9 +52586,12 @@ function Prodotto() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-gray-100 p-6 rounded-lg shadow", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "img",
           {
-            src: prodotto.image,
+            src: `https://celestique.onrender.com/proxy?url=${encodeURIComponent(
+              prodotto.image
+            )}`,
             alt: prodotto.title,
-            className: "w-full object-contain rounded-lg max-h-[500px]"
+            className: "w-full object-contain rounded-lg max-h-[500px]",
+            loading: "lazy"
           }
         ) }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
@@ -53145,4 +53154,4 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 clientExports.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(SWRConfig, { value: { fetcher }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports$1.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.ThemeProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) }) }) })
 );
-//# sourceMappingURL=index-DCwW4UEq.js.map
+//# sourceMappingURL=index-QCde_SKK.js.map
