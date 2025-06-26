@@ -52462,7 +52462,7 @@ function Prodotti() {
   reactExports$1.useEffect(() => {
     localStorage.setItem("prodotti", JSON.stringify(prodotti));
   }, [prodotti]);
-  const { error, data: data2 } = useSWR("https://celestique.onrender.com/products/");
+  const { error, data: data2 } = useSWR("https://celestique.onrender.com/products");
   if (!data2 && !error) return /* @__PURE__ */ jsxRuntimeExports.jsx(Loader, {});
   if (error) return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Errore nel caricamento dei dati" });
   function handleAggiungiProdotto(prodotto) {
@@ -52538,13 +52538,13 @@ function Prodotti() {
       "div",
       {
         id: "popUp",
-        className: "rounded-md border border-gray-300 bg-white p-4",
+        className: "rounded-md border border-gray-300 bg-white p-4 m-4",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-medium text-sky-500", children: messaggio }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
             {
-              onClick: (e2) => setMessaggio(null),
+              onClick: () => setMessaggio(null),
               className: "rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-100",
               children: "Chiudi"
             }
@@ -53154,4 +53154,4 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 clientExports.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsxRuntimeExports.jsx(SWRConfig, { value: { fetcher }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports$1.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.ThemeProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) }) }) })
 );
-//# sourceMappingURL=index-QCde_SKK.js.map
+//# sourceMappingURL=index-L1P-DEgZ.js.map
