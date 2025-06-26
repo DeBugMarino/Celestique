@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import Loading from "./Loading";
+
 export default function Prodotti() {
   const [idPro, setIdPro] = useState(null);
   const navigate = useNavigate();
@@ -16,9 +17,11 @@ export default function Prodotti() {
   useEffect(() => {
     localStorage.setItem("prodotti", JSON.stringify(prodotti));
   }, [prodotti]);
+
   const { error, data } = useSWR("https://celestique.onrender.com/products/");
-  if (!data && !error) return <Loading></Loading>;
+  if (!data && !error) return <Loading />;
   if (error) return <p>Errore nel caricamento dei dati</p>;
+
   function handleAggiungiProdotto(prodotto) {
     setProdotti((prev) => [...prev, prodotto]);
     setMessaggio(`Aggiunto al carrello: ${prodotto.title}`);
@@ -26,12 +29,19 @@ export default function Prodotti() {
       setMessaggio(null);
     }, 2000);
   }
+
   function vediProdotto(id) {
-    const prodottoId = id;
-    console.log(prodottoId);
-    setIdPro(prodottoId);
-    navigate(`/prodotti/${prodottoId}`);
+    setIdPro(id);
+    navigate(`/prodotti/${id}`);
   }
+
+  function getImageUrl(image) {
+    const isGcsImage = image.startsWith("https://storage.googleapis.com/");
+    return isGcsImage
+      ? `https://celestique.onrender.com/proxy?url=${encodeURIComponent(image)}`
+      : image;
+  }
+
   return (
     <>
       <Navbar />
@@ -40,47 +50,52 @@ export default function Prodotti() {
           Il Nostro Catalogo Completo
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {data.products.map((prodotto) => (
-            <div
-              key={prodotto.id}
-              className="bg-white flex flex-col rounded overflow-hidden shadow-md hover:scale-[1.01] transition-all relative"
-            >
-              <button
-                onClick={() => vediProdotto(prodotto.id)}
-                className="block"
+          {data.products.map((prodotto) => {
+            const imageUrl = getImageUrl(prodotto.image);
+
+            return (
+              <div
+                key={prodotto.id}
+                className="bg-white flex flex-col rounded overflow-hidden shadow-md hover:scale-[1.01] transition-all relative"
               >
-                <div className="w-full">
-                  <img
-                    src={prodotto.image}
-                    alt={prodotto.title}
-                    className="w-full aspect-[18/24] object-cover object-top"
-                  />
-                </div>
-                <div className="p-4">
-                  <h5 className="text-sm sm:text-base font-semibold text-slate-900 line-clamp-2">
-                    {prodotto.title}
-                  </h5>
-                  <div className="mt-2 flex items-center flex-wrap gap-2">
-                    <h6 className="text-sm sm:text-base font-semibold text-slate-900">
-                      {prodotto.price} $
-                    </h6>
-                  </div>
-                </div>
-              </button>
-              <div className="min-h-[50px] p-4 !pt-0">
                 <button
-                  type="button"
-                  className="absolute left-0 right-0 bottom-3 max-w-[88%] mx-auto text-sm px-2 py-2 font-medium w-full bg-blue-600 hover:bg-blue-700 text-white tracking-wide outline-none border-none rounded"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleAggiungiProdotto(prodotto);
-                  }}
+                  onClick={() => vediProdotto(prodotto.id)}
+                  className="block"
                 >
-                  Aggiungi al carrello
+                  <div className="w-full">
+                    <img
+                      src={imageUrl}
+                      alt={prodotto.title}
+                      loading="lazy"
+                      className="w-full aspect-[18/24] object-cover object-top"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h5 className="text-sm sm:text-base font-semibold text-slate-900 line-clamp-2">
+                      {prodotto.title}
+                    </h5>
+                    <div className="mt-2 flex items-center flex-wrap gap-2">
+                      <h6 className="text-sm sm:text-base font-semibold text-slate-900">
+                        {prodotto.price} $
+                      </h6>
+                    </div>
+                  </div>
                 </button>
+                <div className="min-h-[50px] p-4 !pt-0">
+                  <button
+                    type="button"
+                    className="absolute left-0 right-0 bottom-3 max-w-[88%] mx-auto text-sm px-2 py-2 font-medium w-full bg-blue-600 hover:bg-blue-700 text-white tracking-wide outline-none border-none rounded"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleAggiungiProdotto(prodotto);
+                    }}
+                  >
+                    Aggiungi al carrello
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

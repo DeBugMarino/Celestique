@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import dataBase from "./database.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import request from "request";
 dotenv.config();
 
 const app = express();
@@ -240,6 +241,40 @@ app.get("/products", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Errore nel recupero dei prodotti" });
   }
+});
+
+// Proxy per immagini da Google Cloud Storage
+app.get("/proxy", (req, res) => {
+  const imageUrl = req.query.url;
+
+  // Validazione dell'URL
+  if (!imageUrl) {
+    return res.status(400).json({ error: "Parametro 'url' mancante" });
+  }
+
+  // Sicurezza: consenti solo URL da storage.googleapis.com
+  const allowedDomains = ["https://storage.googleapis.com/"];
+  const isAllowed = allowedDomains.some((domain) =>
+    imageUrl.startsWith(domain)
+  );
+
+  if (!isAllowed) {
+    return res
+      .status(403)
+      .json({ error: "Dominio non consentito per il proxy" });
+  }
+
+  // Aggiungi header di cache per migliorare performance
+  request
+    .get(imageUrl)
+    .on("response", function (response) {
+      res.setHeader("Cache-Control", "public, max-age=86400"); // cache per 24h
+    })
+    .on("error", (err) => {
+      console.error("Errore nel proxy:", err.message);
+      res.status(500).send("Errore nel proxy: " + err.message);
+    })
+    .pipe(res);
 });
 
 app.listen(process.env.PORT || PORT, () => {

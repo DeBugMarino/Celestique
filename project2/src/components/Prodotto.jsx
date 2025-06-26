@@ -38,9 +38,12 @@ export default function Prodotto() {
           <div className="w-full">
             <div className="bg-gray-100 p-6 rounded-lg shadow">
               <img
-                src={prodotto.image}
+                src={`https://celestique.onrender.com/proxy?url=${encodeURIComponent(
+                  prodotto.image
+                )}`}
                 alt={prodotto.title}
                 className="w-full object-contain rounded-lg max-h-[500px]"
+                loading="lazy"
               />
             </div>
           </div>
