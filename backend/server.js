@@ -12,7 +12,7 @@ const PORT = 10000;
 const secretKey = "celestique";
 const salt = parseInt(process.env.SALT);
 
-app.use(cors());
+app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "DELETE"] }));
 
 app.use(express.json());
 
@@ -234,7 +234,7 @@ app.get("/products/:id", async (req, res) => {
   }
 });
 
-app.get("/products", async (req, res) => {
+app.get("/products/", async (req, res) => {
   try {
     const products = await dataBase.any("SELECT * FROM products");
     res.status(200).json({ products }); // Assicurati di restituire un oggetto con la chiave "products"
